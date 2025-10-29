@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../BaseStyles.xaml"/>
+        
+        <ResourceDictionary>
+            <ControlTemplate x:Key="Template_Button"
+                             TargetType="{x:Type TypeName=Button}">
+                <Border x:Name="Border"
+                        CornerRadius="5"
+                        BorderBrush="{TemplateBinding Property=BorderBrush}"
+                        BorderThickness="{TemplateBinding Property=BorderThickness}"
+                        Background="{TemplateBinding Property=Background}"
+                        Height="{TemplateBinding Property=Height}"
+                        Width="{TemplateBinding Property=Width}">
+                    <ContentControl Content="{TemplateBinding Property=Content}"
+                                    Margin="{TemplateBinding Property=Padding}"
+                                    HorizontalAlignment="{TemplateBinding Property=HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding Property=VerticalContentAlignment}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </Trigger>
+                    
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="Gray"/>
+                        <Setter TargetName="Border" Property="Background" Value="LightGray"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            
+            <Style x:Key="Style_Button_Base" TargetType="{x:Type TypeName=Button}"
+                   BasedOn="{StaticResource ResourceKey=Style_Default}">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="10 5"/>
+            </Style>
+            
+            <Style x:Key="Style_Button_Save" TargetType="{x:Type TypeName=Button}"
+                   BasedOn="{StaticResource ResourceKey=Style_Button_Base}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="Green"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="DarkGreen"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="Style_Button_Delete" TargetType="{x:Type TypeName=Button}"
+                   BasedOn="{StaticResource ResourceKey=Style_Button_Base}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="Red"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="DarkRed"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="Style_Button_Clear" TargetType="{x:Type TypeName=Button}"
+                   BasedOn="{StaticResource ResourceKey=Style_Button_Base}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="OrangeRed"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="DarkOrange"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
