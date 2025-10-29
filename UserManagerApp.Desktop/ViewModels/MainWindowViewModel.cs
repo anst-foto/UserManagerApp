@@ -6,6 +6,8 @@ namespace UserManagerApp.Desktop.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    private readonly Db _db;
+    
     private Guid? _id;
     public Guid? Id
     {
@@ -50,9 +52,26 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
+        _db = new Db();
+        var users = _db.GetAll();
+        InitUsers(users);
+        
         CommandSave = new LambdaCommand(
             execute: _ =>
             {
+                if (Id == null)
+                {
+                    var user = new User(LastName!, FirstName!);
+                    _db.Add(user);
+                    Users.Add(user);
+                }
+                else
+                {
+                    SelectedUser!.LastName = LastName!;
+                    SelectedUser.FirstName = FirstName!;
+                    _db.Update(SelectedUser!);
+                }
+                
                 Clear();
             },
             canExecute: _ => !string.IsNullOrWhiteSpace(LastName) &&
@@ -60,6 +79,9 @@ public class MainWindowViewModel : ViewModelBase
         CommandDelete = new LambdaCommand(
             execute: _ =>
             {
+                _db.Remove(SelectedUser!);
+                Users.Remove(SelectedUser!);
+                
                 Clear();
             },
             canExecute: _ => SelectedUser != null);
