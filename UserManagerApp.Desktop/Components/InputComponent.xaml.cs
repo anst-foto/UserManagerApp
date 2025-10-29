@@ -21,6 +21,14 @@ public partial class InputComponent : UserControl
         set => SetValue(ValueProperty, value);
     }
     
+    public static readonly DependencyProperty IsReadOnlyProperty = 
+        DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(InputComponent));
+    public bool IsReadOnly
+    {
+        get => (bool)GetValue(IsReadOnlyProperty);
+        set => SetValue(IsReadOnlyProperty, value);
+    }
+    
     public InputComponent()
     {
         InitializeComponent();

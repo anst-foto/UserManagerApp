@@ -2,13 +2,37 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:c="clr-namespace:UserManagerApp.Desktop.Components"
+        xmlns:vm="clr-namespace:UserManagerApp.Desktop.ViewModels"
+        xmlns:m="clr-namespace:UserManagerApp.Desktop.Models"
         
         Title="MainWindow" 
         
         Height="450" Width="800">
     <Window.Resources>
-        <ResourceDictionary Source="MainWindowStyles.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MainWindowStyles.xaml"/>
+                
+                <ResourceDictionary>
+                    <DataTemplate x:Key="Template_User"
+                                  DataType="{x:Type TypeName=m:User}">
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="#{0}: {1}">
+                                    <Binding Path="ShortId"/>
+                                    <Binding Path="FullNameWithInitials"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
+    
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -16,25 +40,33 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         
-        <ListBox Grid.Column="0"/>
+        <ListBox ItemsSource="{Binding Path=Users}"
+                 SelectedItem="{Binding Path=SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 SelectionMode="Single"
+                 ItemTemplate="{StaticResource ResourceKey=Template_User}"
+                 Grid.Column="0"/>
         
         <StackPanel Orientation="Vertical" 
                     Grid.Column="1">
             <c:InputComponent Label="ID"
-                              Value=""/>
+                              Value="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="True"/>
             <c:InputComponent Label="Фамилия"
-                              Value=""/>
+                              Value="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <c:InputComponent Label="Имя"
-                              Value=""/>
+                              Value="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Content="Сохранить"
+                        Command="{Binding Path=CommandSave}"
                         Template="{StaticResource ResourceKey=Template_Button}"
                         Style="{StaticResource ResourceKey=Style_Button_Save}"/>
                 <Button Content="Удалить"
+                        Command="{Binding Path=CommandDelete}"
                         Template="{StaticResource ResourceKey=Template_Button}"
                         Style="{StaticResource ResourceKey=Style_Button_Delete}"/>
                 <Button Content="Очистить"
+                        Command="{Binding Path=CommandClear}"
                         Template="{StaticResource ResourceKey=Template_Button}"
                         Style="{StaticResource ResourceKey=Style_Button_Clear}"/>
             </StackPanel>

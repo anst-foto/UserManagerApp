@@ -18,6 +18,7 @@
         <TextBox x:Name="Input"
                  Text="{Binding ElementName=Component, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{StaticResource ResourceKey=Style_Input}"
+                 IsReadOnly="{Binding ElementName=Component, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                  Grid.Column="1"/>
     </Grid>
 </UserControl>
